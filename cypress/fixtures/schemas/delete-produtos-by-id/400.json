@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "required": [
+        "message",
+        "idCarrinho"
+    ],
+    "additionalProperties": true,
+    "properties": {
+        "message": {
+            "type": "string"
+        },
+        "idCarrinho": {
+            "type": "array",
+            "additionalItems": true,
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}

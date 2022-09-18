@@ -1,0 +1,221 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 7,
+    "passes": 7,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-09-12T16:32:52.918Z",
+    "end": "2022-09-12T16:32:57.804Z",
+    "duration": 4886,
+    "testsRegistered": 7,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "c390d460-ca10-49dc-8c3e-8c806504494f",
+      "title": "",
+      "fullFile": "cypress/integration/1.usuarios.spec.js",
+      "file": "cypress/integration/1.usuarios.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+          "title": "Casos de teste sobre a rota /usuarios da API Serverest",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Deve buscar todos os usuários cadastrados",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve buscar todos os usuários cadastrados",
+              "timedOut": null,
+              "duration": 1761,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.buscarUsuarios().then(res => {\n  cy.contractValidation(res, 'get-usuarios', 200);\n  _validaServerest.default.validarBuscaDeUsuarios(res);\n});",
+              "err": {},
+              "uuid": "f3b43ef7-9d0a-445b-8434-4efab11284bb",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve cadastrar um novo usuário administrador",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve cadastrar um novo usuário administrador",
+              "timedOut": null,
+              "duration": 318,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.cadastrarNovoUsuario().then(res => {\n  cy.contractValidation(res, 'post-usuarios', 201);\n  _validaServerest.default.validarCadastroDeUsuarioComSucesso(res);\n});",
+              "err": {},
+              "uuid": "0f52422a-7f25-4300-a284-9703bd5abab4",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve buscar o usuário cadastrado pelo seu Id",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve buscar o usuário cadastrado pelo seu Id",
+              "timedOut": null,
+              "duration": 1526,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.buscarUsuarioPorId().then(res => {\n  cy.contractValidation(res, 'get-usuario-by-id', 200);\n  _validaServerest.default.validarBuscaDeUsuarioPorId(res);\n});",
+              "err": {},
+              "uuid": "059e0ec2-7aae-448a-92e5-5cb79f799dff",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve editar os dados do usuário cadastrado",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve editar os dados do usuário cadastrado",
+              "timedOut": null,
+              "duration": 231,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.editarUsuarioCadastrado().then(res => {\n  cy.contractValidation(res, 'put-usuarios-by-id', 200);\n  _validaServerest.default.validarEdicaoDeUsuario(res);\n});",
+              "err": {},
+              "uuid": "8a6e4e0e-f24b-4759-b17a-22d78f789cd7",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve excluir o usuário cadastrado",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve excluir o usuário cadastrado",
+              "timedOut": null,
+              "duration": 239,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.excluirUsuarioCadastrado().then(res => {\n  cy.contractValidation(res, 'delete-usuarios-by-id', 200);\n  _validaServerest.default.validarExclusaoDeUsuario(res);\n});",
+              "err": {},
+              "uuid": "03ca76b0-9622-432b-a8d3-ec87bdb412b9",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Não deve postar um novo usuário administrador já cadastrado",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Não deve postar um novo usuário administrador já cadastrado",
+              "timedOut": null,
+              "duration": 238,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.postarUsuarioSemSucesso().then(res => {\n  cy.contractValidation(res, 'post-usuarios', 400);\n  _validaServerest.default.validarCadastroDeUsuarioSemSucesso(res);\n});",
+              "err": {},
+              "uuid": "38c8db78-69e9-409b-95fb-8cc6e97e5700",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve buscar e salvar um usuário no arquivo json",
+              "fullTitle": "Casos de teste sobre a rota /usuarios da API Serverest Deve buscar e salvar um usuário no arquivo json",
+              "timedOut": null,
+              "duration": 458,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_serverest.default.buscarUsuarios().then(res => {\n  cy.log(JSON.stringify(res.body.usuarios[0]));\n  cy.writeFile('./cypress/fixtures/users.json', res.body.usuarios[0]);\n  _validaServerest.default.validarBuscaDeUsuarios(res);\n});",
+              "err": {},
+              "uuid": "aa3567d1-7ecd-4fcc-b6d3-120abc5adb82",
+              "parentUUID": "b5dbb75b-802c-4bbe-88fa-a0f908e5bbe3",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "f3b43ef7-9d0a-445b-8434-4efab11284bb",
+            "0f52422a-7f25-4300-a284-9703bd5abab4",
+            "059e0ec2-7aae-448a-92e5-5cb79f799dff",
+            "8a6e4e0e-f24b-4759-b17a-22d78f789cd7",
+            "03ca76b0-9622-432b-a8d3-ec87bdb412b9",
+            "38c8db78-69e9-409b-95fb-8cc6e97e5700",
+            "aa3567d1-7ecd-4fcc-b6d3-120abc5adb82"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 4771,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/mocha",
+        "quite": true,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
