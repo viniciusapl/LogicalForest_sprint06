@@ -18,6 +18,17 @@ describe('Casos de teste sobre a rota /login da API Serverest', () => {
       })
     })
 
+    it('Deve realizar a tentativa de login com senha errada sem sucesso', () => {
+        Serverest.buscarUsuarioComSenhaErrada()
+        cy.get('@usuarioComSenhaErrada').then( usuario => {
+            Serverest.logar(usuario).then( res => {
+              cy.contractValidation(res, 'post-login', 400)
+              ValidaServerest.validaLoginSemSucesso(res)
+            })
+        })
+    })
+
+
     it('Deve realizar tentativa de login sem sucesso', () => {
         let usuario = {
             email: 'naoexiste@test.com',

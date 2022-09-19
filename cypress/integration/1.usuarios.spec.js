@@ -14,16 +14,33 @@ describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
     })
 
     it('Deve cadastrar um novo usuário administrador', () => {
-      Serverest.cadastrarNovoUsuario().then( res => {
+      Serverest.cadastrarNovoUsuarioAleatorio().then( res => {
         cy.contractValidation(res, 'post-usuarios', 201)
         ValidaServerest.validarCadastroDeUsuarioComSucesso(res)
       })
     })
 
-    it('Deve buscar o usuário cadastrado pelo seu Id', () => {
+    it('Não deve realizar o cadastro de um usuário com e-mail já cadastrado', () => {
+      Serverest.buscarUsuarioExistente()
+      cy.get('@usuarioExistente').then( usuario => {
+          Serverest.cadastrarNovoUsuario(usuario).then( res => {
+            cy.contractValidation(res, 'post-usuarios', 400)
+            ValidaServerest.validarCadastroDeUsuarioSemSucesso(res)
+      })
+    })
+  })
+
+    it('Deve buscar o usuário cadastrado pelo seu Id com sucesso', () => {
       Serverest.buscarUsuarioPorId().then(res => {
         cy.contractValidation(res, 'get-usuario-by-id', 200)
         ValidaServerest.validarBuscaDeUsuarioPorId(res)
+      })
+    })
+
+    it('Deve buscar o usuário cadastrado pelo seu Id sem sucesso', () => {
+      Serverest.buscarUsuarioPorIdSemSucesso().then(res => {
+        cy.contractValidation(res, 'get-usuario-by-id', 400)
+        ValidaServerest.validarBuscaDeUsuarioPorIdSemSucesso(res)
       })
     })
 

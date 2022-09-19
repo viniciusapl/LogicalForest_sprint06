@@ -25,6 +25,15 @@ export default class Serverest {
         })
     }
 
+    static buscarUsuarioComSenhaErrada() {
+        cy.request(URL_USUARIOS).then( res => {
+            cy.wrap({
+                email: res.body.usuarios[0].email,
+                password: res.body.usuarios[0].password.slice(2)
+            }).as('usuarioComSenhaErrada')
+        })
+    }
+
     //Buscar as informações de um usuário
     static buscarUsuarioExistente() {
         cy.request(URL_USUARIOS).then( res => {
@@ -38,9 +47,12 @@ export default class Serverest {
     }
 
     //Cadastrar um novo usuário
-    static cadastrarNovoUsuario() {
+    static cadastrarNovoUsuarioAleatorio() {
         let usuario = Factory.gerarUsuarioAdministrador()
+        return cy.rest('POST', URL_USUARIOS, usuario)
+    }
 
+    static cadastrarNovoUsuario(usuario) {
         return cy.rest('POST', URL_USUARIOS, usuario)
     }
 
@@ -48,6 +60,14 @@ export default class Serverest {
         return cy.request({
             method: 'GET',
             url: `${URL_USUARIOS}/${Cypress.env('idUsuarioCadastrado')}`
+        })
+    }
+
+    static buscarUsuarioPorIdSemSucesso() {
+        return cy.request({
+            method: 'GET',
+            url: `${URL_USUARIOS}/${Cypress.env('idUsuarioCadastrado').slice(3)}`,
+            failOnStatusCode: false
         })
     }
 
@@ -106,6 +126,14 @@ export default class Serverest {
         return cy.request({
             method: 'GET',
             url: `${URL_PRODUTOS}/${Cypress.env('idProdutoCadastrado')}`
+        })
+    }
+
+    static buscarProdutoCadastradoPorIdSemSucesso() {
+        return cy.request({
+            method: 'GET',
+            url: `${URL_PRODUTOS}/${Cypress.env('idProdutoCadastrado').slice(2)}`,
+            failOnStatusCode: false
         })
     }
 

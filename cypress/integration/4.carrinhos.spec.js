@@ -42,6 +42,5 @@ describe('Casos de teste sobre a rota /carrinhos da API Serverest', () => {
         ValidaServerest.validarFinalizaçãoDeCompraComSucesso(res)
       })
     })
-
   })
 })

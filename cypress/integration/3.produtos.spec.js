@@ -14,6 +14,7 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
         })
     })
 
+
     context('Logar com sucesso', () => {
         beforeEach('Logar', () => {
             Serverest.buscarUsuarioParaLogin()
@@ -36,6 +37,13 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
             Serverest.buscarProdutoCadastradoPorId().then( res => {
                 cy.contractValidation(res, 'get-produtos-by-id', 200)
                 ValidaServerest.validarBuscaDeProdutoCadastradoPorId(res)
+            })
+        })
+
+        it('Deve realizar a busca de um produto por um Id não existente', () => {
+            Serverest.buscarProdutoCadastradoPorIdSemSucesso().then( res => {
+                cy.contractValidation(res, 'get-produtos-by-id', 400)
+                ValidaServerest.validarBuscaDeProdutoCadastradoPorIdSemSucesso(res)
             })
         })
 
