@@ -1,7 +1,15 @@
 {
+<<<<<<< Updated upstream
   "nome": "Teagan Wunsch",
   "email": "automation-postUserKenna.Bashirian@gmail.com",
   "password": "1234",
   "administrador": "true",
   "_id": "0JgF0SGbjLGlreXM"
+=======
+  "nome": "Fulano da Silva",
+  "email": "fulano@qa.com",
+  "password": "teste",
+  "administrador": "true",
+  "_id": "0uxuPY0cbmQhpEz1"
+>>>>>>> Stashed changes
 }

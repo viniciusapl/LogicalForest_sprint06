@@ -10,7 +10,11 @@
 //
 //
 // -- This is a parent command --
+<<<<<<< Updated upstream
 // 
+=======
+// Cypress.Commands.add('login', (email, password) => { ... })
+>>>>>>> Stashed changes
 //
 //
 // -- This is a child command --
@@ -23,9 +27,12 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+<<<<<<< Updated upstream
 
 //const cypress = require("cypress");  //--------> essa linha estava causando erro no código, tive que comentar ela
 
+=======
+>>>>>>> Stashed changes
 import Ajv from 'ajv'
 const ajv = new Ajv({allErrors: true, verbose: true, strict: false})
 

@@ -1,5 +1,8 @@
 /// <reference types="cypress" />
+<<<<<<< Updated upstream
 // ***********************************************************
+=======
+>>>>>>> Stashed changes
 
 
 const fs = require('fs-extra');
