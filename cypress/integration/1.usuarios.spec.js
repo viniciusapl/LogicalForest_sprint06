@@ -73,4 +73,13 @@ describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
       })
     })
 
+    it('Deve buscar e salvar um usuário no arquivo json', () => {
+      Serverest.buscarUsuariosAdministradores()
+      cy.get('@listaDeAdms').then( res => {
+        cy.log(JSON.stringify(res))
+        cy.writeFile('./cypress/fixtures/usuarios-adms.json', res)
+        ValidaServerest.validarAdm(res)
+      })
+    })
   })
+

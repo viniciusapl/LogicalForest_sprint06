@@ -46,6 +46,18 @@ export default class Serverest {
         })
     }
 
+    // Função para filtrar os usuários administradores
+    static buscarUsuariosAdministradores() {
+        cy.request(URL_USUARIOS).then( res => { //eu faço um GET na URL de usuários para obter a lista completa deles
+            let listaDeUsuarios = res.body.usuarios //após isso salvo o array onde ficam as informações dos usuários dentro da variável 'listaDeUsuarios'
+            let adms = {
+                quantidade: listaDeUsuarios.filter(usuario => (usuario.administrador === "true")).length,
+                administradores: listaDeUsuarios.filter(usuario => (usuario.administrador === "true"))
+            }//após salvar eu filtro os usuários e adiciono todos que possuem administrador = true em um novo objeto onde posso validar quantos usuários administradores tenho e acessar a informação de cada um deles
+            cy.wrap(adms).as('listaDeAdms')//"Embalo" as informações que consegui com o filtro para poder usá-las e assim salvar dentro de um JSON para usá-las futuramente
+        })
+    }
+
     //Cadastrar um novo usuário
     static cadastrarNovoUsuarioAleatorio() {
         let usuario = Factory.gerarUsuarioAdministrador()
@@ -106,14 +118,12 @@ export default class Serverest {
     }
 
     //Cadastra um novo produto
-    static cadastrarProdutoComSucesso() {
-        let produto = Factory.gerarProduto()
-
+    static cadastrarProdutoComSucesso(produto) {
         return cy.request({
             method: 'POST',
             url: URL_PRODUTOS,
             body: produto,
-            failOnStatusCode: true,
+            failOnStatusCode: false,
             auth: {
                 bearer: Cypress.env('bearer')
             }
@@ -137,6 +147,17 @@ export default class Serverest {
         })
     }
 
+    static buscarProdutoExistente() {
+        cy.request(URL_PRODUTOS).then( res => {
+            cy.wrap({
+                nome: res.body.produtos[0].nome,
+                preco: res.body.produtos[0].preco,
+                descricao: res.body.produtos[0].descricao,
+                quantidade: res.body.produtos[0].quantidade
+            }).as('produtoExistente')
+        })
+    }
+
     //Usa o Id do produto para realizar a alteração nos dados cadastrados
     static editarProdutoCadastrado() {
         let produto = Factory.gerarProduto()
@@ -146,7 +167,8 @@ export default class Serverest {
             body: produto,
             auth: {
                 bearer: Cypress.env('bearer')
-            }
+            },
+            failOnStatusCode: false
         })
     }
 
@@ -171,7 +193,7 @@ export default class Serverest {
             // Depois de selecionar o produto vou "embalar" as informações dele que preciso
             cy.wrap({
                 idProduto: res.body.produtos[inteiro]._id, //Para gerar um carrinho preciso do id do produto
-                quantidade: Factory.gerarInteiroAleatorio(100)// e também da quantidade de produtos que será adicionada ao carrinho
+                quantidade: Factory.gerarInteiroAleatorio(5)// e também da quantidade de produtos que será adicionada ao carrinho
             }).as('produtoParaCarrinho')
         })
     }
@@ -197,6 +219,20 @@ export default class Serverest {
         })
     }
 
+    static buscarCarrinhoCadastradoPorId() {
+        return cy.request({
+            method: 'GET',
+            url: `${URL_CARRINHOS}/${Cypress.env('idCarrinhoCadastrado')}`
+        })
+    }
+
+    static buscarCarrinhoCadastradoPorIdSemSucesso() {
+        return cy.request({
+            method: 'GET',
+            url: `${URL_CARRINHOS}/${Cypress.env('idCarrinhoCadastrado').slice(2)}`,
+            failOnStatusCode: false
+        })
+    }
 
     static concluirCompraComSucesso() {
         return cy.request({

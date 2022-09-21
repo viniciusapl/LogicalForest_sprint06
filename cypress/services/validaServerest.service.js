@@ -20,6 +20,10 @@ export default class ValidaServerest {
         expect(resposta.status).to.equal(400)
     }
 
+    static validarAdm(resposta) {
+        expect(resposta).to.be.a('object')
+    }
+
     static validarBuscaDeUsuarioPorId(resposta) {
         expect(resposta.body).to.be.a('object')
         expect(resposta.status).to.equal(200)
@@ -66,6 +70,11 @@ export default class ValidaServerest {
         Cypress.env('idProdutoCadastrado', resposta.body._id)
     }
 
+    static validarCadastroDeProdutoSemSucesso(resposta) {
+        expect(resposta.body.message).to.be.eq('Já existe produto com esse nome')
+        expect(resposta.status).to.equal(400)
+    }
+
     static validarBuscaDeProdutoCadastradoPorId(resposta) {
         expect(resposta.body).to.be.a('object')
         expect(resposta.status).to.equal(200)
@@ -96,6 +105,16 @@ export default class ValidaServerest {
     static validarCadastroDeCarrinho(resposta) {
         expect(resposta.body.message).to.be.eq('Cadastro realizado com sucesso')
         expect(resposta.status).to.equal(201)
+        Cypress.env('idCarrinhoCadastrado', resposta.body._id)
+    }
+
+    static validarBuscaDeCarrinhoPorId(resposta) {
+        expect(resposta.status).to.equal(200)
+    }
+
+    static validarBuscaDeCarrinhoCadastradoPorIdSemSucesso(resposta) {
+        expect(resposta.body).to.be.a('object')
+        expect(resposta.status).to.equal(400)
     }
 
     static validarFinalizaçãoDeCompraComSucesso(resposta) {

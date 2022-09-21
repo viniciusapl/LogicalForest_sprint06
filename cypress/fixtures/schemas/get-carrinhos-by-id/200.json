@@ -13,26 +13,22 @@
             "type": "array",
             "additionalItems": true,
             "items": {
-                "type": "array",
-                "additionalItems": true,
-                "items": {
-                    "type": "object",
-                    "required": [
-                        "idProduto",
-                        "quantidade",
-                        "precoUnitario"
-                    ],
-                    "additionalProperties": true,
-                    "properties": {
-                        "idProduto": {
-                            "type": "string"
-                        },
-                        "quantidade": {
-                            "type": "integer"
-                        },
-                        "precoUnitario": {
-                            "type": "integer"
-                        }
+                "type": "object",
+                "required": [
+                    "idProduto",
+                    "quantidade",
+                    "precoUnitario"
+                ],
+                "additionalProperties": true,
+                "properties": {
+                    "idProduto": {
+                        "type": "string"
+                    },
+                    "quantidade": {
+                        "type": "integer"
+                    },
+                    "precoUnitario": {
+                        "type": "integer"
                     }
                 }
             }

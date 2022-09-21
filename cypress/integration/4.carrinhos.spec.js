@@ -6,6 +6,7 @@ import ValidaServerest from '../services/validaServerest.service'
 
 
 describe('Casos de teste sobre a rota /carrinhos da API Serverest', () => {
+
   it('Deve buscar todos os carrinhos cadastrados', () => {
     Serverest.buscarCarrinhos().then(res => {
       cy.contractValidation(res, 'get-carrinhos', 200)
@@ -33,6 +34,20 @@ describe('Casos de teste sobre a rota /carrinhos da API Serverest', () => {
         })
       })
     })
+
+    it('Deve buscar um carrinho pelo seu Id', () => {
+      Serverest.buscarCarrinhoCadastradoPorId().then( res => {
+        cy.contractValidation(res, 'get-carrinhos-by-id', 200)
+        ValidaServerest.validarBuscaDeCarrinhoPorId(res)
+      })
+    })
+
+    it('Deve realizar a busca de um carrinho por um Id não existente', () => {
+      Serverest.buscarCarrinhoCadastradoPorIdSemSucesso().then( res => {
+          cy.contractValidation(res, 'get-carrinhos-by-id', 400)
+          ValidaServerest.validarBuscaDeCarrinhoCadastradoPorIdSemSucesso(res)
+      })
+  })
 
     //A exclusão do carrinho será feita aqui através da finalização da compra
     //O carrinho selecionado para exclusão é sempre o carrinho relacionado ao Bearer Token
