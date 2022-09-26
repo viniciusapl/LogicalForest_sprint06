@@ -57,5 +57,54 @@ describe('Casos de teste sobre a rota /carrinhos da API Serverest', () => {
         ValidaServerest.validarFinalizaçãoDeCompraComSucesso(res)
       })
     })
+
+    it('Não deve cadastrar um carrinho com produto duplicado', () => {
+      Serverest.buscarProdutoParaCarrinho() //Aqui eu faço a busca de um produto aleatório dentro da lista de produtos
+      cy.get('@produtoParaCarrinho').then( produto => {//O produto retornado na linha acima é chamado aqui no cy.get('@produtoParaCarrinho') e enviado para a próxima função para a adição do carrinho com produto duplicado
+        Serverest.adicionarCarrinhoComProdutoDuplicado(produto).then( res => {
+          cy.contractValidation(res, 'post-carrinhos', 400)
+          ValidaServerest.validarCadastroDeCarrinhoComProdutoDuplicado(res)
+        })
+      })
+    })
+  })
+  
+  it('Não deve cadastrar carrinho sem possuir um token de autenticação', () => {
+    Serverest.buscarProdutoParaCarrinho()
+    cy.get('@produtoParaCarrinho').then( produto => {
+      Serverest.postarCarrinhoSemAutenticacao(produto).then( res => {
+        cy.contractValidation(res, 'post-carrinhos', 401)
+        ValidaServerest.validarCadastroDeCarrinhoSemAutenticacao(res)
+      })
+    })
+  })
+
+  it('Não deve realizar a finalização da compra sem realizar o login', () => {
+    Serverest.concluirCompraSemLogin().then(res => {
+      cy.contractValidation(res, 'delete-carrinhos-concluir-compra', 200)
+      ValidaServerest.validarFinalizaçãoDeCompraSemLogin(res)
+    })
+  })
+
+  context('Realizar o login com sucesso usando um usuário com carrinho já cadastrado', () => {
+    beforeEach('Logar', () => {
+      Serverest.buscarUsuarioComCarrinho()
+      cy.get('@usuarioComCarrinho').then( usuario => {
+        Serverest.logar(usuario).then( res => {
+          ValidaServerest.validaLoginComSucesso(res)
+          Serverest.salvarBearer(res) // O Bearer está sendo salvo aqui, ele é necessário para realizar algumas requisições dentro de /carrinhos
+        })
+      })
+    })
+
+    it('Não deve cadastrar um carrinho para usuário com carrinho já cadastrado', () => {
+      Serverest.buscarProdutoParaCarrinho() //Aqui eu faço a busca de um produto aleatório dentro da lista de produtos
+      cy.get('@produtoParaCarrinho').then( produto => {//O produto retornado na linha acima é chamado aqui no cy.get('@produtoParaCarrinho') e enviado para a próxima função para a adição do carrinho
+        Serverest.adicionarCarrinhoComSucesso(produto).then( res => {
+          cy.contractValidation(res, 'post-carrinhos', 400)
+          ValidaServerest.validarCadastroDeCarrinhoParaUsuarioComCarrinho(res)
+        })
+      })
+    })
   })
 })

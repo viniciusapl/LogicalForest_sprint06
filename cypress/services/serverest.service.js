@@ -17,12 +17,21 @@ export default class Serverest {
 
     //Buscar um usuário e utilizar as informações dele para o login
     static buscarUsuarioParaLogin() {
-        cy.request(URL_USUARIOS).then( res => {
-            cy.wrap({
-                email: res.body.usuarios[0].email,
-                password: res.body.usuarios[0].password
-            }).as('usuarioLogin')
-        })
+        cy.fixture('usuarios-adms.json').then( json => {
+        cy.wrap({
+            email: json.administradores[0].email,
+            password: json.administradores[0].password
+        }).as('usuarioLogin')
+    })
+    }
+
+    static buscarUsuarioNaoAdmParaLogin() {
+        cy.fixture('usuarios-nao-adms.json').then( json => {
+        cy.wrap({
+            email: json.usuarios[0].email,
+            password: json.usuarios[0].password
+        }).as('usuarioNaoAdmLogin')
+    })
     }
 
     static buscarUsuarioComSenhaErrada() {
@@ -55,6 +64,34 @@ export default class Serverest {
                 administradores: listaDeUsuarios.filter(usuario => (usuario.administrador === "true"))
             }//após salvar eu filtro os usuários e adiciono todos que possuem administrador = true em um novo objeto onde posso validar quantos usuários administradores tenho e acessar a informação de cada um deles
             cy.wrap(adms).as('listaDeAdms')//"Embalo" as informações que consegui com o filtro para poder usá-las e assim salvar dentro de um JSON para usá-las futuramente
+        })
+    }
+
+    static buscarUsuariosNaoAdministradores() {
+        cy.request(URL_USUARIOS).then( res => {
+            let listaDeUsuarios = res.body.usuarios
+            let naoAdms = {
+                quantidade: listaDeUsuarios.filter(usuario => (usuario.administrador === "false")).length,
+                administradores: listaDeUsuarios.filter(usuario => (usuario.administrador === "false"))
+            }
+            cy.wrap(naoAdms).as('listaDeNaoAdms')
+        })
+    }
+
+    static buscarUsuarioComCarrinho() {
+        cy.request(URL_CARRINHOS).then( res => {
+            let idUsuario = res.body.carrinhos[0].idUsuario
+
+            cy.request({
+                method: 'GET',
+                url: `${URL_USUARIOS}/${idUsuario}`,
+                failOnStatusCode: false
+            }).then( res => {
+                cy.wrap({
+                    email: res.body.email,
+                    password: res.body.password
+                }).as('usuarioComCarrinho')
+            })
         })
     }
 
@@ -118,7 +155,7 @@ export default class Serverest {
     }
 
     //Cadastra um novo produto
-    static cadastrarProdutoComSucesso(produto) {
+    static cadastrarProduto(produto) {
         return cy.request({
             method: 'POST',
             url: URL_PRODUTOS,
@@ -127,7 +164,15 @@ export default class Serverest {
             auth: {
                 bearer: Cypress.env('bearer')
             }
+        })
+    }
 
+    static cadastrarProdutoSemLogar(produto) {
+        return cy.request({
+            method: 'POST',
+            url: URL_PRODUTOS,
+            body: produto,
+            failOnStatusCode: false
         })
     }
 
@@ -159,8 +204,7 @@ export default class Serverest {
     }
 
     //Usa o Id do produto para realizar a alteração nos dados cadastrados
-    static editarProdutoCadastrado() {
-        let produto = Factory.gerarProduto()
+    static editarProdutoCadastrado(produto) {
         return cy.request({
             method: 'PUT',
             url: `${URL_PRODUTOS}/${Cypress.env('idProdutoCadastrado')}`,
@@ -219,6 +263,32 @@ export default class Serverest {
         })
     }
 
+    static adicionarCarrinhoComProdutoDuplicado(produto) {
+        return cy.request({
+            method: 'POST',
+            url: URL_CARRINHOS,
+            body: {
+                produtos: [
+                    produto,
+                    produto
+                ]
+            },
+            failOnStatusCode: false,
+            auth: {
+                bearer: Cypress.env('bearer')
+            }
+        })
+    }
+
+    static postarCarrinhoSemAutenticacao(produto) {
+        return cy.request({
+            method: 'POST',
+            url: URL_CARRINHOS,
+            body: produto,
+            failOnStatusCode: false
+        })
+    }
+
     static buscarCarrinhoCadastradoPorId() {
         return cy.request({
             method: 'GET',
@@ -241,6 +311,13 @@ export default class Serverest {
             auth: {
                 bearer: Cypress.env('bearer')
             }
+        })
+    }
+
+    static concluirCompraSemLogin() {
+        return cy.request({
+            method: 'DELETE',
+            url: `${URL_CARRINHOS}/concluir-compra`
         })
     }
 

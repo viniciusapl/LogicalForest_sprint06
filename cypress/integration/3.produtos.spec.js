@@ -16,8 +16,16 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
         })
     })
 
+    it('Não deve postar produto sem estar logado', () => {
+        let produto = Factory.gerarProduto()
+        Serverest.cadastrarProdutoSemLogar(produto).then( res => {
+            cy.contractValidation(res, 'post-produtos', 401)
+            ValidaServerest.validarCadastroDeProdutoSemLogar(res)
+        })
+    })
+
     //Primeiro preciso realizar o login para conseguir realizar as validações que necessitam de autenticação
-    context('Logar com sucesso', () => {
+    context('Logar com sucesso usando um usuário administrador', () => {
         beforeEach('Logar', () => {
             Serverest.buscarUsuarioParaLogin()
             cy.get('@usuarioLogin').then( usuario => {
@@ -30,7 +38,7 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
 
         it('Deve postar um novo produto com sucesso', () => {
             let produto = Factory.gerarProduto()
-            Serverest.cadastrarProdutoComSucesso(produto).then( res => {
+            Serverest.cadastrarProduto(produto).then( res => {
                 cy.contractValidation(res, 'post-produtos', 201)
                 ValidaServerest.validarCadastroDeProdutoComSucesso(res)
             })
@@ -39,13 +47,13 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
         it('Não deve postar um produto já cadastrado', () => {
             Serverest.buscarProdutoExistente()
             cy.get('@produtoExistente').then( produto => {
-                Serverest.cadastrarProdutoComSucesso(produto).then( res => {
+                Serverest.cadastrarProduto(produto).then( res => {
                     cy.contractValidation(res, 'post-produtos', 400)
                     ValidaServerest.validarCadastroDeProdutoSemSucesso(res)
                 })
             })
         })
-        
+
         it('Deve realizar a busca do produto cadastrado pelo Id', () => {
             Serverest.buscarProdutoCadastradoPorId().then( res => {
                 cy.contractValidation(res, 'get-produtos-by-id', 200)
@@ -61,9 +69,20 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
         })
 
         it('Deve editar os dados do produto cadastrado com sucesso', () => {
-            Serverest.editarProdutoCadastrado().then( res => {
+            let produto = Factory.gerarProduto()
+            Serverest.editarProdutoCadastrado(produto).then( res => {
                 cy.contractValidation(res, 'put-produtos-by-id', 200)
                 ValidaServerest.validarEdicaoDeProdutoCadastradoComSucesso(res)
+            })
+        })
+
+        it('Não deve editar um produto com as mesmas informações de produto já cadastrado', () => {
+            Serverest.buscarProdutoExistente()
+            cy.get('@produtoExistente').then( produto => {
+                Serverest.editarProdutoCadastrado(produto).then( res => {
+                    cy.contractValidation(res, 'put-produtos-by-id', 400)
+                    ValidaServerest.validarEdicaoDeProdutoSemSucesso(res)
+                })
             })
         })
 
@@ -75,6 +94,34 @@ describe('Casos de teste sobre a rota /produtos da API Serverest', () => {
         })
     })
 
+    context('Logar com sucesso usando um usuário não administrador', () => {
+        beforeEach('Logar', () => {
+            Serverest.buscarUsuarioNaoAdmParaLogin()
+            cy.get('@usuarioNaoAdmLogin').then( usuario => {
+              Serverest.logar(usuario).then( res => {
+                ValidaServerest.validaLoginComSucesso(res)
+                Serverest.salvarBearer(res)
+              })
+            })
+        })
 
+        it('Não deve postar um novo produto com usuário não administrador', () => {
+            let produto = Factory.gerarProduto()
+            Serverest.cadastrarProduto(produto).then( res => {
+                cy.contractValidation(res, 'post-produtos', 403)
+                ValidaServerest.validarCadastroDeProdutoUsuarioNaoAdm(res)
+            })
+        })
+
+        it('Não deve editar produto usando usuário não administrador', () => {
+            let produto = Factory.gerarProduto()
+            Serverest.editarProdutoCadastrado(produto).then( res => {
+                cy.contractValidation(res, 'put-produtos-by-id', 403)
+                ValidaServerest.validarEdicaoDeProdutoUsuarioNaoAdm(res)
+            }) 
+        })
+
+
+    })
 
   })

@@ -3,6 +3,7 @@
 
 import Serverest from '../services/serverest.service'
 import ValidaServerest from '../services/validaServerest.service'
+import Factory from "../fixtures/facture"
 
 
 describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
@@ -10,6 +11,26 @@ describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
       Serverest.buscarUsuarios().then( res => {
         cy.contractValidation(res, 'get-usuarios', 200)
         ValidaServerest.validarBuscaDeUsuarios(res)
+      })
+    })
+
+    context('Filtrar e separar os usuários conforme sua categoria', () => {
+      it('Deve buscar e salvar os usuários administradores em um arquivo json', () => {
+        Serverest.buscarUsuariosAdministradores()
+        cy.get('@listaDeAdms').then( res => {
+          cy.log(JSON.stringify(res))
+          cy.writeFile('./cypress/fixtures/usuarios-adms.json', res)
+          ValidaServerest.validarAdm(res)
+        })
+      })
+  
+      it('Deve buscar e salvar os usuários não administradores em um arquivo json', () => {
+        Serverest.buscarUsuariosNaoAdministradores()
+        cy.get('@listaDeNaoAdms').then( res => {
+          cy.log(JSON.stringify(res))
+          cy.writeFile('./cypress/fixtures/usuarios-nao-adms.json', res)
+          ValidaServerest.validarAdm(res)
+        })
       })
     })
 
@@ -23,12 +44,12 @@ describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
     it('Não deve realizar o cadastro de um usuário com e-mail já cadastrado', () => {
       Serverest.buscarUsuarioExistente()
       cy.get('@usuarioExistente').then( usuario => {
-          Serverest.cadastrarNovoUsuario(usuario).then( res => {
-            cy.contractValidation(res, 'post-usuarios', 400)
-            ValidaServerest.validarCadastroDeUsuarioSemSucesso(res)
+        Serverest.cadastrarNovoUsuario(usuario).then( res => {
+          cy.contractValidation(res, 'post-usuarios', 400)
+          ValidaServerest.validarCadastroDeUsuarioSemSucesso(res)
+        })
       })
     })
-  })
 
     it('Deve buscar o usuário cadastrado pelo seu Id com sucesso', () => {
       Serverest.buscarUsuarioPorId().then(res => {
@@ -58,28 +79,4 @@ describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
         ValidaServerest.validarExclusaoDeUsuario(res)
       })
     })
-    it('Não deve postar um novo usuário administrador já cadastrado', () => {
-      cy.postarUsuarioSemSucesso().then( res => {
-        cy.contractValidation(res, 'post-usuarios', 400)
-        ValidaServerest.validarCadastroDeUsuarioSemSucesso(res)
-      })
-    })
-
-    it('Deve buscar e salvar um usuário no arquivo json', () => {
-      Serverest.buscarUsuarios().then( res => {
-        cy.log(JSON.stringify(res.body.usuarios[0]))
-        cy.writeFile('./cypress/fixtures/users.json', res.body.usuarios[0])
-        ValidaServerest.validarBuscaDeUsuarios(res)
-      })
-    })
-
-    it('Deve buscar e salvar um usuário no arquivo json', () => {
-      Serverest.buscarUsuariosAdministradores()
-      cy.get('@listaDeAdms').then( res => {
-        cy.log(JSON.stringify(res))
-        cy.writeFile('./cypress/fixtures/usuarios-adms.json', res)
-        ValidaServerest.validarAdm(res)
-      })
-    })
   })
-

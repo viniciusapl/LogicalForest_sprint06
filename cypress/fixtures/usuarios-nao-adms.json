@@ -1,0 +1,19 @@
+{
+  "quantidade": 2,
+  "administradores": [
+    {
+      "nome": "rafa",
+      "email": "rafael@gmail.com",
+      "password": "12345",
+      "administrador": "false",
+      "_id": "UrTVaEgloInodUDV"
+    },
+    {
+      "nome": "maiara",
+      "email": "teste@teste.com",
+      "password": "654321",
+      "administrador": "false",
+      "_id": "VdnwJN1ggvxD66Eu"
+    }
+  ]
+}

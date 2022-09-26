@@ -28,15 +28,4 @@ describe('Casos de teste sobre a rota /login da API Serverest', () => {
         })
     })
 
-
-    it('Deve realizar tentativa de login sem sucesso', () => {
-        let usuario = {
-            email: 'naoexiste@test.com',
-            password: '123'
-        }
-        Serverest.logar(usuario).then(res => {
-            cy.contractValidation(res, 'post-login', 400)
-            ValidaServerest.validaLoginSemSucesso(res)
-        })
-    })
-  })
+})

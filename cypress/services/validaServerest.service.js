@@ -64,6 +64,11 @@ export default class ValidaServerest {
         expect(resposta.status).to.equal(200)
     }
 
+    static validarCadastroDeProdutoSemLogar(resposta) {
+        expect(resposta.body.message).to.be.eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+        expect(resposta.status).to.equal(401)
+    }
+
     static validarCadastroDeProdutoComSucesso(resposta) {
         expect(resposta.body.message).to.be.eq('Cadastro realizado com sucesso')
         expect(resposta.status).to.equal(201)
@@ -90,9 +95,24 @@ export default class ValidaServerest {
         expect(resposta.status).to.equal(200)
     }
 
+    static validarEdicaoDeProdutoSemSucesso(resposta) {
+        expect(resposta.body.message).to.be.eq('Já existe produto com esse nome')
+        expect(resposta.status).to.equal(400)
+    }
+
     static validarExclusaoDeProduto(resposta) {
         expect(resposta.body.message).to.be.eq('Registro excluído com sucesso')
         expect(resposta.status).to.equal(200)
+    }
+
+    static validarCadastroDeProdutoUsuarioNaoAdm(resposta) {
+        expect(resposta.body.message).to.be.eq('Rota exclusiva para administradores')
+        expect(resposta.status).to.equal(403)
+    }
+
+    static validarEdicaoDeProdutoUsuarioNaoAdm(resposta) {
+        expect(resposta.body.message).to.be.eq('Rota exclusiva para administradores')
+        expect(resposta.status).to.equal(403)
     }
 
     //VALIDAÇÕES DE CARRINHOS
@@ -106,6 +126,21 @@ export default class ValidaServerest {
         expect(resposta.body.message).to.be.eq('Cadastro realizado com sucesso')
         expect(resposta.status).to.equal(201)
         Cypress.env('idCarrinhoCadastrado', resposta.body._id)
+    }
+
+    static validarCadastroDeCarrinhoSemAutenticacao(resposta) {
+        expect(resposta.body.message).to.be.eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+        expect(resposta.status).to.equal(401)
+    }
+
+    static validarCadastroDeCarrinhoComProdutoDuplicado(resposta) {
+        expect(resposta.body.message).to.be.eq('Não é permitido possuir produto duplicado')
+        expect(resposta.status).to.equal(400)
+    }
+
+    static validarCadastroDeCarrinhoParaUsuarioComCarrinho(resposta) {
+        expect(resposta.body.message).to.be.eq('Não é permitido ter mais de 1 carrinho')
+        expect(resposta.status).to.equal(400)
     }
 
     static validarBuscaDeCarrinhoPorId(resposta) {
@@ -122,4 +157,8 @@ export default class ValidaServerest {
         expect(resposta.status).to.equal(200)
     }
 
+    static validarFinalizaçãoDeCompraSemLogin(resposta) {
+        expect(resposta.body.message).to.be.eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+        expect(resposta.status).to.equal(401)
+    }
 }
