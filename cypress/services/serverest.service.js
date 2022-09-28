@@ -317,7 +317,8 @@ export default class Serverest {
     static concluirCompraSemLogin() {
         return cy.request({
             method: 'DELETE',
-            url: `${URL_CARRINHOS}/concluir-compra`
+            url: `${URL_CARRINHOS}/concluir-compra`,
+            failOnStatusCode: false
         })
     }
 
