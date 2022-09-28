@@ -7,6 +7,7 @@ import Factory from "../fixtures/facture"
 
 
 describe('Casos de teste sobre a rota /usuarios da API Serverest', () => {
+  
     it('Deve buscar todos os usuários cadastrados', () => {
       Serverest.buscarUsuarios().then( res => {
         cy.contractValidation(res, 'get-usuarios', 200)

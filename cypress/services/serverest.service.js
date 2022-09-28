@@ -72,7 +72,7 @@ export default class Serverest {
             let listaDeUsuarios = res.body.usuarios
             let naoAdms = {
                 quantidade: listaDeUsuarios.filter(usuario => (usuario.administrador === "false")).length,
-                administradores: listaDeUsuarios.filter(usuario => (usuario.administrador === "false"))
+                usuarios: listaDeUsuarios.filter(usuario => (usuario.administrador === "false"))
             }
             cy.wrap(naoAdms).as('listaDeNaoAdms')
         })
